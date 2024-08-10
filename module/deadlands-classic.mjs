@@ -10,6 +10,9 @@ import { MeleeDataModel } from './data/melee-data.mjs';
 import { MiscItemDataModel } from './data/misc-item-data.mjs';
 import { NPCDataModel } from './data/npc-data.mjs';
 import { OtherRangedDataModel } from './data/other-ranged-data.mjs';
+import { DeadlandsDie } from './dice/dlc-die.mjs';
+import { DeadlandsRollParser } from './dice/dlc-parser.mjs';
+import { DeadlandsRoll } from './dice/dlc-rolls.mjs';
 import { DeadlandsActor } from './documents/dlc-actor.mjs';
 import { DeadlandsCombat } from './documents/dlc-combat.mjs';
 import { DeadlandsCombatant } from './documents/dlc-combatant.mjs';
@@ -116,6 +119,14 @@ Hooks.once('init', async () => {
     makeDefault: true,
     label: 'DLC.sheet-type.characterww',
   });
+
+  // Make the parser recognise and construct a DeadlandsDie
+  CONFIG.Dice.parser = DeadlandsRollParser;
+  CONFIG.Dice.rolls = [DeadlandsRoll];
+
+  if (!('l' in CONFIG.Dice.terms)) {
+    CONFIG.Dice.terms.l = DeadlandsDie;
+  }
 
   registerItemSheets();
   createGameSettings();
